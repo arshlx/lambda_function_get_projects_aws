@@ -11,7 +11,7 @@ shadowJar {
     }
 }
 
-group 'au.edu.wsu.mict'
+group 'com.mict'
 version '1.0-SNAPSHOT'
 
 repositories {

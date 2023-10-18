@@ -76,12 +76,14 @@ public class LambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
-        countryName = input.getBody();
-        context.getLogger().log("Country name: " + countryName);
+        Map<String, String> queryParams = input.getQueryStringParameters();
+        countryName = queryParams.get("country");
+        if (countryName == null) {
+            return generateResponse(TaskStatus.SERVER_ERROR, "No params supplied");
+        }
 
         APIGatewayProxyResponseEvent countryListResponse = getCountryList();
         ArrayList<CountryItem> countryList;
-        countryName = input.getBody();
         context.getLogger().log("Country status: " + countryListResponse.getStatusCode());
         context.getLogger().log("Country body: " + countryListResponse.getBody());
         if (countryListResponse.getStatusCode() == TaskStatus.SUCCESS) {
